@@ -71,7 +71,21 @@ def _run_collector(path: Path, force: bool, limits_only: bool) -> dict[str, Any]
   return payload if isinstance(payload, dict) else None
 
 
+def _refresh_claude() -> None:
+  # Expired Claude Code sign-in makes the official collector republish a stale
+  # in-window percentage. Refresh first so the probe sees the live Max quota.
+  script = Path.home() / ".local/bin/claude-oauth-refresh"
+  if not script.is_file():
+    return
+  try:
+    subprocess.run([str(script)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=25, check=False)
+  except (OSError, subprocess.TimeoutExpired):
+    return
+
+
 def collect_official(agent_id: str, name: str, force: bool, limits_only: bool) -> dict[str, Any]:
+  if agent_id == "claude":
+    _refresh_claude()
   path = _collector_path(agent_id)
   record = _run_collector(path, force, limits_only) if path is not None else None
   if not record:

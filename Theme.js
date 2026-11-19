@@ -3,7 +3,7 @@
 // Quiet Magilla accent. Status colors follow Omarchy: theme foreground for
 // healthy meters, urgent when a window is nearly spent.
 
-var purple = "#7B3FA0"
+var purple = ""  // local: follow Omarchy theme accent (Color.accent)
 
 var statusActive = ""
 var statusLow = "#C9A227"
