@@ -64,7 +64,7 @@ function parseBarSlots(value) {
   var out = []
   for (var k = 0; k < slots.length; k++) {
     if (slots[k] !== "" && out.indexOf(slots[k]) < 0) out.push(slots[k])
-    if (out.length >= 3) break
+    if (out.length >= 4) break  // local patch: 4 bar slots (Antigravity)
   }
   return out
 }
@@ -480,6 +480,7 @@ function mergeProviders(catalog, records, settings) {
     target.hasPromptStats = rec.hasPromptStats !== false
     target.updatedAt = String(rec.updatedAt || "")
     if (target.ready || hasUsage(target)) target.detected = true
+    if (target.ready && (target.limits.length > 0 || target.balance)) target.authenticated = true  // local patch: remote quota collector (Antigravity)
   }
 
   var out = []
@@ -527,7 +528,7 @@ function resolveBarProviders(all, settings) {
       if (byId[autoIds[a]]) slots.push(byId[autoIds[a]])
     }
   }
-  return slots.slice(0, 3)
+  return slots.slice(0, 4)
 }
 
 function pinSlots(current, id, on) {
@@ -536,7 +537,7 @@ function pinSlots(current, id, on) {
   for (var i = 0; i < slots.length; i++) if (slots[i] !== id) next.push(slots[i])
   if (on) {
     next.unshift(id)
-    next = next.slice(0, 3)
+    next = next.slice(0, 4)
   }
   return next
 }

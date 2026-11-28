@@ -21,6 +21,7 @@ HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
   sys.path.insert(0, str(HERE))
 
+import antigravity as antigravity_mod  # noqa: E402  (local patch)
 import cursor as cursor_mod  # noqa: E402
 import detect  # noqa: E402
 import grok as grok_mod  # noqa: E402
@@ -34,7 +35,7 @@ COLLECTORS = {
   "grok": grok_mod.collect,
   "cursor": cursor_mod.collect,
   "opencode": opencode_mod.collect,
-  "gemini": local_mod.collect_gemini,
+  "gemini": antigravity_mod.collect,  # local patch: Antigravity subscription quota
   "copilot": local_mod.collect_copilot,
   "crush": local_mod.collect_crush,
   "pi": local_mod.collect_pi,
